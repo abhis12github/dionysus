@@ -7,7 +7,6 @@ import { Info } from 'lucide-react';
 import React from 'react';
 
 const BillingPage = () => {
-    const {userId}=useAuth();
     const { data: user } = api.project.getMyCredits.useQuery();
     const [creditsToBuy, setCreditsToBuy] = React.useState<number[]>([100]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -22,7 +21,7 @@ const BillingPage = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ credits: creditsToBuyAmount,userId }),
+                body: JSON.stringify({ credits: creditsToBuyAmount,userId:user?.id }),
             });
 
             const data = await response.json();

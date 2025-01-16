@@ -124,7 +124,7 @@ export const projectRouter = createTRPCRouter({
         return await ctx.db.userToProject.findMany({ where: { projectId: input.projectId }, include: { user: true } });
     }),
     getMyCredits: protectedProcedure.query(async ({ ctx }) => {
-        return await ctx.db.user.findUnique({ where: { id: ctx.user.userId! }, select: { credits: true } })
+        return await ctx.db.user.findUnique({ where: { id: ctx.user.userId! }, select: { credits: true,id:true } })
     }),
     checkCredits: protectedProcedure.input(z.object({ githubUrl: z.string(), githubToken: z.string().optional() })).mutation(async ({ ctx, input }) => {
         const fileCount = await checkCredits(input.githubUrl, input.githubToken);
