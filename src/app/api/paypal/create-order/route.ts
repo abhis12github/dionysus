@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { useAuth } from '@clerk/nextjs';
 
-const {userId}=useAuth();
 const PAYPAL_API_URL = process.env.PAYPAL_ENV === 'production'
   ? 'https://api-m.paypal.com'
   : 'https://api-m.sandbox.paypal.com';
@@ -39,7 +38,7 @@ async function getPayPalAccessToken() {
 
 export async function POST(request: Request) {
   try {
-    const { credits } = await request.json();
+    const { credits, userId} = await request.json();
     
     const accessToken = await getPayPalAccessToken();
 
