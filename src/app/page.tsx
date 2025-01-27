@@ -16,7 +16,7 @@ export default function Home() {
           <p className="text-blue-600 font-semibold">GitBuddy</p>
         </div>
 
-        <button className="py-2 px-4 bg-blue-600 text-white rounded-sm text-sm  hover:bg-white hover:outline-blue-600 hover:outline hover:outline-1 hover:text-blue-600 smooth shadow-sm font-medium" onClick={handleSignIn}>SignIn</button>
+        <button className="py-2 px-4 bg-blue-600 text-white rounded-sm text-sm  hover:bg-white hover:outline-blue-600 hover:outline hover:outline-1 hover:text-blue-600 smooth shadow-sm font-medium hidden" onClick={handleSignIn}>SignIn</button>
       </div>
 
       <div className="flex justify-center items-center mt-6 space-y-2 flex-col">
