@@ -84,24 +84,6 @@
   }
 }
 
-.scrollbar-thin::-webkit-scrollbar {
-  width: 4px;
-  height: 12px;
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2); /* Handle color */
-  border-radius: 50px; /* Rounded corners */
-}
-
-.scrollbar-thin::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.4); /* Hover effect */
-}
-
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent; /* Track background */
-}
-
-.scrollbar-thin::-webkit-scrollbar-button {
-  display: none; /* Hides the arrows (indicators) */
+::-webkit-scrollbar {
+  scrollbar-width: none;
 }
