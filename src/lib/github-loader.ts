@@ -4,6 +4,16 @@ import { generateEmbedding, summariseCode } from './gemini';
 import { db } from '@/server/db';
 import { Octokit } from 'octokit';
 
+const GITHUB_TOKEN=process.env.GITHUB_TOKEN;
+
+const getDefaultBranch = async (octokit: Octokit, githubOwner: string, githubRepo: string) => {
+    const { data } = await octokit.rest.repos.get({
+        owner: githubOwner,
+        repo: githubRepo,
+    });
+    return data.default_branch; // Returns 'main', 'master', or another branch name
+};
+
 //recursive function to calculate number of files in a github repository.
 const getFileCount=async(path:string,octokit:Octokit,githubOwner:string,githubRepo:string,acc:number=0)=>{
     const {data}=await octokit.rest.repos.getContent({
@@ -43,7 +53,8 @@ const getFileCount=async(path:string,octokit:Octokit,githubOwner:string,githubRe
 }
 
 export const checkCredits=async(githubUrl:string,githubToken?:string)=>{
-    const octokit=new Octokit({auth:githubToken});
+    const token=githubToken || GITHUB_TOKEN;
+    const octokit=new Octokit({auth:token});
 
     const githubOwner=githubUrl.split('/')[3];
     const githubRepo=githubUrl.split('/')[4];
@@ -55,9 +66,16 @@ export const checkCredits=async(githubUrl:string,githubToken?:string)=>{
     return fileCount;
 }
 export const loadGithubRepo=async(githubUrl:string,githubToken?:string)=>{
+    const token = githubToken || GITHUB_TOKEN;
+    const githubOwner = githubUrl.split('/')[3];
+    const githubRepo = githubUrl.split('/')[4];
+    const octokit = new Octokit({ auth: token });
+    if(!githubOwner || !githubRepo) return;
+
+    const branch = await getDefaultBranch(octokit, githubOwner, githubRepo);
     const loader=new GithubRepoLoader(githubUrl,{
-        accessToken:githubToken||'',
-        branch:'main',
+        accessToken:token,
+        branch,
         ignoreFiles:['package-lock.json','yark.lock','pnpm-lock.yaml','bun.lockb'],
         recursive:true,
         unknown:'warn',
@@ -70,6 +88,7 @@ export const loadGithubRepo=async(githubUrl:string,githubToken?:string)=>{
 export const indexGithubRepo=async(projectId:string,githubUrl:string,githubToken?:string)=>{
     const docs=await loadGithubRepo(githubUrl,githubToken);
 
+    if(!docs) return;
     const allEmbeddings=await generateEmbeddings(docs);
 
     await Promise.allSettled(allEmbeddings.map(async (embedding,index)=>{

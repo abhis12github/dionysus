@@ -19,6 +19,7 @@ import {
   Bot,
   CreditCard,
   LayoutDashboard,
+  LucideGithub,
   Plus,
   Presentation,
 } from "lucide-react";
@@ -59,7 +60,10 @@ export function AppSidebar() {
         <div className="flex items-center gap-2 justify-center">
           {/* <Image src="" alt="logo" width={40} height={40}></Image>  */}
           {open && (
-            <h1 className="text-xl font-bold text-primary/90">GitBuddy</h1>
+            <div className="flex gap-2 mt-2">
+            <span><LucideGithub></LucideGithub></span>
+            <p className="text-blue-600 font-semibold">GitBuddy</p>
+          </div>
           )}
         </div>
       </SidebarHeader>
