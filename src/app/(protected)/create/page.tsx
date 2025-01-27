@@ -9,9 +9,9 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 type FormInput = {
-  repoUrl: string;
-  projectName: string;
-  githubToken?: string;
+  repoUrl: string,
+  projectName: string,
+  githubToken?: string
 };
 
 const CreatePage = () => {
